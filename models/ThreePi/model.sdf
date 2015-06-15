@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.4'>
-  <model name="ThreePi">
+  <model name="threepi">
         <static>false</static>
           <link name='chassis'>
           <pose>0 0 .01274 0 0 0</pose>
@@ -190,5 +190,6 @@
           </dynamics>
         </axis>
       </joint>
+		<plugin name="gazebo_controller_interface_PD" filename="libgazebo_controller_interface_PD.so"/>
   </model>
 </sdf>
