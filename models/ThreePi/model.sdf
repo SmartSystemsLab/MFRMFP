@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.4'>
-  <model name="threepi">
+  <model name="ThreePi">
         <static>false</static>
           <link name='chassis'>
           <pose>0 0 .01274 0 0 0</pose>
