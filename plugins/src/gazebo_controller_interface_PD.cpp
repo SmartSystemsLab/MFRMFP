@@ -73,7 +73,7 @@ namespace gazebo
 			static double lerr1 = 0, lerr2 = 0;
 
       // setup gains 
-      const double KP = 1.0, KD = 0.0;
+      const double KP = 0.1, KD = 0.0;
 
       //_output_current << _j1->GetAngle(0).Radian() << " " << _j2->GetAngle(0).Radian() << std::endl;
       //_output_des << vJ1_DES << " " << vJ2_DES << std::endl;
@@ -147,7 +147,7 @@ namespace gazebo
 			//record data
 			//gazebo::common::Time t1 = _world->GetSimTime();
 			int t1 = 1;
-			log << i << "," << t1 << "," << w1 << "," << w2 << "," << err1 << "," << err2 << "," << derr1 << "," << derr2 << "," << vJ1_DES << "," << vJ2_DES << "," << tau1 << "," << tau2 << std::endl;
+			log << i << "," << t1 << "," << w1 << "," << w2 << "," << err1 << "," << err2 << "," << derr1 << "," << derr2 << "," << vJ1_DES << "," << vJ2_DES << "," << tau1 << "," << tau2 << "," << KP << "," << KD << std::endl;
 			i++;
     }
 
