@@ -3,7 +3,7 @@
   <model name="ThreePi">
         <static>false</static>
           <link name='chassis'>
-          <pose>0 0 .51774 0 0 0</pose>
+          <pose>0 0 .01274 0 0 0</pose>
            <inertial>
             <pose> 0.01 0 0 0 0 0 </pose>
             <mass>0.09</mass>
@@ -96,7 +96,7 @@
        </link>
 
         <link name="left_wheel">
-          <pose>0 0.05043 0.5189 0 1.5707 1.5707</pose>
+          <pose>0 0.05043 0.0139 0 1.5707 1.5707</pose>
           <collision name="collision">
             <geometry>
               <cylinder>
@@ -132,7 +132,7 @@
       </link>
 
       <link name="right_wheel">
-       <pose>0 -0.05043 0.5189 0 1.5707 1.5707</pose>
+       <pose>0 -0.05043 0.0139 0 1.5707 1.5707</pose>
        <collision name="collision">
           <geometry>
             <cylinder>
@@ -173,10 +173,10 @@
         <parent>chassis</parent>
         <axis>
           <xyz>0 1 0</xyz>
+          <dynamics>
+            <damping>0.1</damping>
+          </dynamics>
         </axis>
-        <dynamics>
-         <damping>1</damping>
-        </dynamics>
       </joint>
 
       <joint type="revolute" name="right_wheel_joint">
@@ -185,10 +185,10 @@
         <parent>chassis</parent>
         <axis>
           <xyz>0 1 0</xyz>
+          <dynamics>
+            <damping>0.1</damping>
+          </dynamics>
         </axis>
-        <dynamics>
-         <damping>1</damping>
-        </dynamics>
       </joint>
   </model>
 </sdf>
