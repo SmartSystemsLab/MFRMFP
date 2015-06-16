@@ -5,7 +5,7 @@
           <link name='chassis'>
             <pose>0 0 .01444 0 0 0</pose>
             <inertial>
-						  <pose>0 0.015 -0.005 0 0 0</pose>
+						  <pose>0 0.25 -0.25 0 0 0</pose>
               <mass>0.09</mass>
               <inertia>
                 <ixx>0.000050645</ixx>
@@ -81,6 +81,7 @@
                <emissive>0 0 0 0</emissive>
             </material>
          </visual>
+<<<<<<< HEAD
 
           <collision name='caster_collision2'>
             <pose>-0.034 0 -0.00807 0 0 0</pose>
@@ -105,6 +106,8 @@
                <emissive>0 0 0 0</emissive>
             </material>
          </visual>
+=======
+>>>>>>> fe1b10bb331cfb710dbdaee8ec1281b8872b00bc
        </link>
 
         <link name="left_wheel">
