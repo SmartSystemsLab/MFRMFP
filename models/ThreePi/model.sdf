@@ -3,19 +3,19 @@
   <model name="threepi">
         <static>false</static>
           <link name='chassis'>
-          <pose>0 0 .01274 0 0 0</pose>
-           <inertial>
-						<pose>0 0.015 -0.005 0 0 0</pose>
-            <mass>0.09</mass>
-             <inertia>
-              <ixx>0.000050645</ixx>
-              <ixy>0.0</ixy>
-              <ixz>0.0</ixz>
-              <iyy>0.000050645</iyy>
-              <iyz>0.0</iyz>
-              <izz>0.000099557</izz>
-             </inertia>
-           </inertial>
+            <pose>0 0 .01444 0 0 0</pose>
+            <inertial>
+						  <pose>0 0.015 -0.005 0 0 0</pose>
+              <mass>0.09</mass>
+              <inertia>
+                <ixx>0.000050645</ixx>
+                <ixy>0.0</ixy>
+                <ixz>0.0</ixz>
+                <iyy>0.000050645</iyy>
+                <iyz>0.0</iyz>
+                <izz>0.000099557</izz>
+              </inertia>
+            </inertial>
             <collision name='collision'>
               <geometry>
                 <cylinder>
@@ -69,8 +69,8 @@
             <surface>
               <friction>
                 <ode>
-                  <mu>0.2</mu>
-                  <mu2>0.2</mu2>
+                  <mu>0.0</mu>
+                  <mu2>0.0</mu2>
                   <slip1>1.0</slip1>
                   <slip2>1.0</slip2>
                 </ode>
@@ -104,8 +104,8 @@
             <surface>
               <friction>
                 <ode>
-                  <mu>0.2</mu>
-                  <mu2>0.2</mu2>
+                  <mu>0.0</mu>
+                  <mu2>0.0</mu2>
                   <slip1>1.0</slip1>
                   <slip2>1.0</slip2>
                 </ode>
@@ -130,7 +130,7 @@
        </link>
 
         <link name="left_wheel">
-          <pose>0 0.05043 0.0139 0 1.5707 1.5707</pose>
+          <pose>0 0.05043 0.0156 0 1.5707 1.5707</pose>
           <collision name="collision">
             <geometry>
               <cylinder>
@@ -141,8 +141,8 @@
             <surface>
               <friction>
                 <ode>
-                  <mu>0.2</mu>
-                  <mu2>0.2</mu2>
+                  <mu>0.5</mu>
+                  <mu2>0.5</mu2>
                   <slip1>0.0</slip1>
                   <slip2>0.0</slip2>
                 </ode>
@@ -166,7 +166,7 @@
       </link>
 
       <link name="right_wheel">
-       <pose>0 -0.05043 0.0139 0 1.5707 1.5707</pose>
+       <pose>0 -0.05043 0.0156 0 1.5707 1.5707</pose>
        <collision name="collision">
           <geometry>
             <cylinder>
@@ -177,8 +177,8 @@
             <surface>
               <friction>
                 <ode>
-                  <mu>0.2</mu>
-                  <mu2>0.2</mu2>
+                  <mu>0.5</mu>
+                  <mu2>0.5</mu2>
                   <slip1>0.0</slip1>
                   <slip2>0.0</slip2>
                 </ode>
