@@ -9,8 +9,6 @@
 #include <stdio.h>
 #include <fstream>
 
-int i = 0;
-
 namespace gazebo
 {
   class PDController : public ModelPlugin
@@ -18,7 +16,8 @@ namespace gazebo
     private: physics::WorldPtr _world;
     private: physics::ModelPtr _model;
     private: physics::JointPtr _j1, _j2;
-    private: std::ofstream _output_current, _output_des;
+    //private: std::ofstream _output_current, _output_des;
+		private: std::ofstream log;
 
     public: PDController()
     {
@@ -26,8 +25,9 @@ namespace gazebo
 
     public: ~PDController()
     {
-      _output_current.close();
-      _output_des.close();
+      //_output_current.close();
+      //_output_des.close();
+			log.close();
     }
 
     public: void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
@@ -46,13 +46,15 @@ namespace gazebo
       // get the joints
       this->_j1 = _model->GetJoint("left_wheel_joint");
       this->_j2 = _model->GetJoint("right_wheel_joint");
+
     }
 
     // open up the file for writing 
     public: void Init()
     {
-      _output_current.open("PD_hold.state");
-      _output_des.open("PD_hold.desired");
+      //_output_current.open("PD_hold.state");
+      //_output_des.open("PD_hold.desired");
+			log.open("threepiPD.csv");
 
       // set initial joint positions
       //this->_j1->SetPosition(0, -M_PI_2);
@@ -63,6 +65,7 @@ namespace gazebo
     public: void OnUpdate(const common::UpdateInfo & /*_info*/)
     {
       //const double CHANGEME = 0.0; //yo no se
+			//log.open("/home/caleb/datalog.txt");
 
       // set the desired positions and velocities
       //const double J1_DES = 0.0, J2_DES = 0.0;
@@ -70,11 +73,10 @@ namespace gazebo
 			static double lerr1 = 0, lerr2 = 0;
 
       // setup gains 
-      const double KP = 2.0, KD = 0.5;
+      const double KP = 0.1, KD = 0.0;
 
-      // output current and desired state
-      _output_current << _j1->GetAngle(0).Radian() << " " << _j2->GetAngle(0).Radian() << std::endl;
-      _output_des << vJ1_DES << " " << vJ2_DES << std::endl;
+      //_output_current << _j1->GetAngle(0).Radian() << " " << _j2->GetAngle(0).Radian() << std::endl;
+      //_output_des << vJ1_DES << " " << vJ2_DES << std::endl;
 
       // get current positions and velocities
       //double theta1 = _j1->GetAngle(0).Radian();  
@@ -129,9 +131,24 @@ namespace gazebo
       const double tau1 = KP*err1+KD*derr1;
       const double tau2 = KP*err2+KD*derr2;
 
+			static int i = 1;
       // set torques
+
+			if(i < 41){
       this->_j1->SetForce(0, tau1);
       this->_j2->SetForce(0, tau2);
+			}
+			else{
+			this->_j1->SetForce(0, 0);
+      this->_j2->SetForce(0, 0);
+			}
+			
+			
+			//record data
+			//gazebo::common::Time t1 = _world->GetSimTime();
+			int t1 = 1;
+			log << i << "," << t1 << "," << w1 << "," << w2 << "," << err1 << "," << err2 << "," << derr1 << "," << derr2 << "," << vJ1_DES << "," << vJ2_DES << "," << tau1 << "," << tau2 << "," << KP << "," << KD << std::endl;
+			i++;
     }
 
     // Pointer to the update event connection

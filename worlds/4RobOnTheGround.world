@@ -1,0 +1,33 @@
+<sdf version='1.5'>
+  <world name='default'>
+    <physics type="ode">
+      <gravity>0 0 -9.81</gravity>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    
+    <include>
+      <uri>model://sun</uri>
+    </include>
+  
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+  <population name = "rob_population">
+     <model name="ThreePi">
+      <include>
+        <uri>model://ThreePi</uri>
+      </include>
+    </model>
+    <pose>0 0 0 0 0 0</pose>
+     <distribution>
+       <type>grid</type>
+        <rows>2</rows>
+        <cols>2</cols>
+        <step>1 1 0</step>
+    </distribution>
+  </population>
+
+ </world>
+</sdf>
+
