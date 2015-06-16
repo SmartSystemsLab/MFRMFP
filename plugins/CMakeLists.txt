@@ -13,3 +13,7 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 
 add_library(gazebo_controller_interface_PD SHARED src/gazebo_controller_interface_PD.cpp)
 target_link_libraries(gazebo_controller_interface_PD ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
+
+add_library(ThreePi_controller_PD SHARED src/ThreePi_controller_PD.cpp)
+target_link_libraries(ThreePi_controller_PD ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
+

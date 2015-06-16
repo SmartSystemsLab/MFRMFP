@@ -65,17 +65,6 @@
                 <radius>.00637</radius>
               </sphere>
             </geometry>
-
-            <surface>
-              <friction>
-                <ode>
-                  <mu>0.0</mu>
-                  <mu2>0.0</mu2>
-                  <slip1>1.0</slip1>
-                  <slip2>1.0</slip2>
-                </ode>
-              </friction>
-            </surface>
           </collision>
 
           <visual name='caster_visual'>
@@ -100,17 +89,6 @@
                 <radius>.00637</radius>
               </sphere>
             </geometry>
-
-            <surface>
-              <friction>
-                <ode>
-                  <mu>0.0</mu>
-                  <mu2>0.0</mu2>
-                  <slip1>1.0</slip1>
-                  <slip2>1.0</slip2>
-                </ode>
-              </friction>
-            </surface>
           </collision>
 
           <visual name='caster_visual2'>
@@ -138,16 +116,6 @@
                 <length>.0066</length>
               </cylinder>
             </geometry>
-            <surface>
-              <friction>
-                <ode>
-                  <mu>0.5</mu>
-                  <mu2>0.5</mu2>
-                  <slip1>0.0</slip1>
-                  <slip2>0.0</slip2>
-                </ode>
-              </friction>
-            </surface>
         </collision>
         <visual name="visual">
           <geometry>
@@ -174,16 +142,6 @@
               <length>.0066</length>
             </cylinder>
           </geometry>
-            <surface>
-              <friction>
-                <ode>
-                  <mu>0.5</mu>
-                  <mu2>0.5</mu2>
-                  <slip1>0.0</slip1>
-                  <slip2>0.0</slip2>
-                </ode>
-              </friction>
-            </surface>
         </collision>       
        <visual name="visual">
           <geometry>
@@ -218,6 +176,7 @@
           <xyz>0 1 0</xyz>
         </axis>
       </joint>
-		<plugin name="gazebo_controller_interface_PD" filename="libgazebo_controller_interface_PD.so"/>
+      
+      <plugin name="ThreePiCTRL_PD" filename="libThreePi_controller_PD.so"/>
   </model>
 </sdf>
