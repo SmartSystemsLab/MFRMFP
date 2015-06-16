@@ -218,5 +218,6 @@
           <xyz>0 1 0</xyz>
         </axis>
       </joint>
+		<plugin name="gazebo_controller_interface_PD" filename="libgazebo_controller_interface_PD.so"/>
   </model>
 </sdf>
