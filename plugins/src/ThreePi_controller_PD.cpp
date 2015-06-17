@@ -60,6 +60,7 @@ namespace gazebo
 			const double v_dl = 0.1;
 			const double v_dr = 0.1;
 			const double WHEEL_RADIUS = 0.015;
+			const double TAU_MAX = 63.55;
 			
 			// Static variables
 			static double lerr_l = 0.0;
@@ -75,6 +76,27 @@ namespace gazebo
 			double derr_r = err_r - lerr_r;
 			double tau_l = KP*err_l + KD*lerr_r;
 			double tau_r = KP*err_r + KD*lerr_r;
+			
+			if (tau_l > TAU_MAX)
+			{
+				tau_l = TAU_MAX;
+			}
+			else if (tau_l < -TAU_MAX)
+			{
+				tau_l = -TAU_MAX;
+			}
+			
+			if (tau_r > TAU_MAX)
+			{
+				tau_r = TAU_MAX;
+			}
+			else if (tau_r < -TAU_MAX)
+			{
+				tau_r = -TAU_MAX;
+			}
+			
+			//tau_l = 0.05;
+			//tau_r = 0.05;
 			
 			this->_Motor_l->SetForce(0, tau_l);
 			this->_Motor_r->SetForce(0, tau_r);
