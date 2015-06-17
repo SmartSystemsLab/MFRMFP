@@ -8,6 +8,7 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
+#include <gazebo/math/gzmath.hh>
 
 // Boost Headers
 #include <boost/bind.hpp>
@@ -20,11 +21,14 @@ namespace gazebo
 	class ThreePiCTRL_PD : public ModelPlugin
 	{
 		private:
+		physics::WorldPtr _world;
 		physics::ModelPtr _model;
+		physics::ModelPtr _plane;
 		physics::JointPtr _Motor_l;
 		physics::JointPtr _Motor_r;
 		event::ConnectionPtr updateConnection;
 		std::ofstream out_file;
+		std::ofstream pose_file;
 		
 		public:
 		ThreePiCTRL_PD()
@@ -34,12 +38,17 @@ namespace gazebo
 		~ThreePiCTRL_PD()
 		{
 			out_file.close();
+			pose_file.close();
 		}
 		
 		void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 		{
-			// Store the pointer to the model
+			// Store the pointer to the 3pi model
 			_model = _parent;
+			// Store the pointer to the world
+			_world = _model->GetWorld();
+			// Store the pointer to the plae
+			_plane = _world->GetModel("1DPlane");
 			// Listen to the update event. This event is broadcast every
 			// simulation iteration.
 			this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ThreePiCTRL_PD::OnUpdate, this, _1));
@@ -50,6 +59,7 @@ namespace gazebo
 		void Init()
 		{
 			out_file.open("ThreePiSim_out.csv");
+			pose_file.open("ThreePiSim_pose.csv");
 		}
 		
 		void OnUpdate(const common::UpdateInfo & /*_info*/)
@@ -101,7 +111,11 @@ namespace gazebo
 			this->_Motor_l->SetForce(0, tau_l);
 			this->_Motor_r->SetForce(0, tau_r);
 			
+			math::Pose threepipose = this->_model->GetWorldPose();
+			math::Pose planepose = this->_plane->GetWorldPose();
+
 			// write data
+			pose_file << threepipose << ";;" << planepose << std::endl;
 			out_file << iter << ',' << v_dl << ',' << v_dr << ',' << v_al << ',' << v_ar << ',' << err_l << ',' << err_r << ',' << derr_l << ',' << derr_r << ',' << tau_l << ',' << tau_r << std::endl;
 			
 			// update static variables
