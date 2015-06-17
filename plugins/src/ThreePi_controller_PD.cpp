@@ -55,8 +55,8 @@ namespace gazebo
 		void OnUpdate(const common::UpdateInfo & /*_info*/)
 		{
 			// Relevant Constants
-			const double KP = 5.0;
-			const double KD = 0.1;
+			const double KP = 55.0;
+			const double KD = 6.0;
 			const double v_dl = 0.1;
 			const double v_dr = 0.1;
 			const double WHEEL_RADIUS = 0.015;
