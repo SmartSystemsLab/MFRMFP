@@ -8,6 +8,7 @@ clear all
 close all
 
 data = dlmread('ThreePiSim_out.csv', ',');
+state = dlmread('ThreePiSim_pose.csv', ',');
 
 figure(1)
 hold on
@@ -33,3 +34,13 @@ xlabel('iteration');
 ylabel('tourque');
 legend('left', 'right');
 
+figure(4)
+hold on
+plot(state(:, 1), state(:, 2))
+xlabel('x posiiton');
+ylabel('y position');
+
+figure(5)
+plot(state(:, 3))
+xlabel('sample')
+ylabel('theta')

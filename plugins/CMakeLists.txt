@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(Boost REQUIRED COMPONENTS system)
-include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS} ./include)
 link_directories(${Boost_LIBRARY_DIRS})
 
 include (FindPkgConfig)
@@ -17,3 +17,5 @@ target_link_libraries(gazebo_controller_interface_PD ${GAZEBO_LIBRARIES} ${Boost
 add_library(ThreePi_controller_PD SHARED src/ThreePi_controller_PD.cpp)
 target_link_libraries(ThreePi_controller_PD ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
 
+add_library(ThreePi_controller_POS SHARED src/ThreePi_controller_POS.cpp)
+target_link_libraries(ThreePi_controller_POS ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})

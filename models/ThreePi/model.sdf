@@ -192,6 +192,6 @@
         </axis>
       </joint>
       
-      <plugin name="ThreePiCTRL_PD" filename="libThreePi_controller_PD.so"/>
+      <plugin name="ThreePiCTRL_POS" filename="libThreePi_controller_POS.so"/>
   </model>
 </sdf>
