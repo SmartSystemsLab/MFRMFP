@@ -87,6 +87,9 @@ namespace gazebo
 			double tau_l = KP*err_l + KD*lerr_r;
 			double tau_r = KP*err_r + KD*lerr_r;
 			
+			common::Time time = _world->GetSimTime();
+			double sim_time = time.Double(); 
+			
 			if (tau_l > TAU_MAX)
 			{
 				tau_l = TAU_MAX;
@@ -116,7 +119,7 @@ namespace gazebo
 
 			// write data
 			pose_file << threepipose << ";;" << planepose << std::endl;
-			out_file << iter << ',' << v_dl << ',' << v_dr << ',' << v_al << ',' << v_ar << ',' << err_l << ',' << err_r << ',' << derr_l << ',' << derr_r << ',' << tau_l << ',' << tau_r << std::endl;
+			out_file << iter << ','<< sim_time << ',' << v_dl << ',' << v_dr << ',' << v_al << ',' << v_ar << ',' << err_l << ',' << err_r << ',' << derr_l << ',' << derr_r << ',' << tau_l << ',' << tau_r << std::endl;
 			
 			// update static variables
 			lerr_l = err_l;
