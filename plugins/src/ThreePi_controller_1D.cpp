@@ -84,13 +84,11 @@ namespace gazebo
 			static int iter = 0;
 			
 			// Get the state
-			math::Pose pose = this->_model->GetWorldPose();
-			state[0] = pose.pos.x;
-			state[1] = pose.pos.y;
-			state[2] = pose.rot.GetYaw();
+			math::Pose ThreePi_pose = this->_model->GetWorldPose();
+			math::Pose Plane_pose = this->_plane->GetWorldPose();
 			
 			// Get Desired velocities
-			goto_point(&v_dl, &v_dr, state , des_pos);
+			calc_des_vel(&v_dl, &v_dr, state , des_pos);
 			
 			// Get Actual velocities
 			double v_al = this->_Motor_l->GetVelocity(0)*WHEEL_RADIUS;
