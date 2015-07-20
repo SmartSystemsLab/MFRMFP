@@ -191,7 +191,5 @@
           </dynamics>
         </axis>
     </joint>
-      
-      <plugin name="ThreePiCTRL_POS" filename="libThreePi_controller_POS.so"/>
   </model>
 </sdf>

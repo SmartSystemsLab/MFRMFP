@@ -22,6 +22,8 @@
 
     <include>
       <uri>model://ThreePi</uri>
+      <plugin name="ThreePiCTRL_POS" filename="libThreePi_controller_POS.so"/>
+      <plugin name="ThreePiREC" filename="libThreePi_recorder.so"/>
     </include>
 
  </world>

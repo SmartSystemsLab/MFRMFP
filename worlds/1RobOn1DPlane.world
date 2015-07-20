@@ -15,22 +15,15 @@
     
     <include>
        <uri>model://1DPlane</uri>
+       <plugin name="PlaneREC" filename="libPlane1D_recorder.so"/>
     </include>
-
-  <population name = "rob_population">
-     <model name="ThreePi">
-      <include>
-        <uri>model://ThreePi</uri>
-      </include>
-    </model>
-    <pose>0 0 0.505 0 0 0</pose>
-     <distribution>
-       <type>grid</type>
-        <rows>1</rows>
-        <cols>1</cols>
-        <step>0 0 0</step>
-    </distribution>
-  </population>
+	
+    <include>
+      <pose>0 0 0.505 0 0 0</pose>
+      <uri>model://ThreePi</uri>
+      <plugin name="ThreePiREC" filename="libThreePi_recorder.so"/>
+      <plubin name="ThreePiCTRL" filename="libThreePi_controller_1D.so"/>
+    </include>
 
  </world>
 </sdf>

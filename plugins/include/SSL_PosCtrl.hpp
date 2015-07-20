@@ -9,6 +9,10 @@
 #include <math.h>
 #include <gazebo/math/gzmath.hh>
 
+// only include once
+#ifndef SSL_POS_CTRL_H
+#define SSL_POS_CTRL_H
+
 // Macros
 #define X_POS 0
 #define Y_POS 1
@@ -17,13 +21,17 @@
 #define KL 1
 #define KA 1
 
-#define KP 1
-#define KD 1
+#define KP_BAL 7.0899
+#define KD_BAL 10.2309
 
 #define V_MAX 1
 
 #define MAX_REL_Z 0.01
 #define MAX_REL_AXIS_OFF 0.001
+
+#define PLANE_POS_X 0
+#define PLANE_POS_Y 0
+#define PLANE_POS_Z 0.5
 
 // Function Prototypes
 /*
@@ -48,17 +56,31 @@ void goto_point(double* v_l, double* v_r, double* state, double* p_des);
  * v_l - pointer toward variable to contain the left wheel velocity
  * v_r - pointer toward variable to contain the right wheel velocity
  * rob_pose - pose of the robot
- * plane_pose - pose of the plane
  * m - mass of robot
- * m_t total mass of swarm
+ * m_t - total mass of swarm
+ * plane_theta - angle of the plane
+ * plane_omega - angular velocity of the plane
  *
  * Returns code based on success of calculation
  *  0 - everything is A-OK
  *  1 - relative rotation test failed.
  */
-int balance_plane_1d(double* v_l, double* v_r, gazebo::math::Pose rob_pose,
-	gazebo::math::Pose plane_pose, double m, double m_t, double plane_theta,
-	double plane_omega);
+int balance_plane_1d(double* v_l, double* v_r, gazebo::math::Pose rob_pose, 
+	double m, double m_t, double plane_theta, double plane_omega);
+
+/*
+ * get_state_from_poses
+ *
+ * rotates the robot's pose from global frame to the local frame of the plane.
+ *
+ * state - array where the transformed state will be stored.
+ * rob_pose - pose of the robot
+ * plane_angle_x - euler angle of the plane in the X direction
+ * plane_angle_y - euler angle of the plane in the y direction
+ *
+ * Returns 0 if successful, 1 if invalid poses
+ */	
+int get_state_from_poses(double* state, gazebo::math::Pose rob_pose, double plane_angle_x, double plane_angle_y);
 
 // Function Definitions
 void goto_point(double* v_l, double* v_r, double* state, double* p_des)
@@ -94,21 +116,51 @@ void goto_point(double* v_l, double* v_r, double* state, double* p_des)
 	}
 }
 
-bool balance_plane_1d(double* v_l, double* v_r, gazebo::math::Pose rob_pose,
-	gazebo::math::Pose plane_pose, double m, double m_t, double plane_theta,
-	double plane_omega)
+int balance_plane_1d(double* v_l, double* v_r, gazebo::math::Pose rob_pose,
+	double m, double m_t, double plane_theta, double plane_omega)
 {
 	double state[3];
-	double angle;
 	double v_des;
 	double ang_cor;
+	
+	if (!get_state_from_poses(state, rob_pose, plane_theta, 0))
+	{
+		return 1;
+	}
+	
+	v_des = (m/m_t)*(KP_BAL*plane_theta + KD_BAL*plane_omega);
+	ang_cor = KA*(-state[THETA]);
+	
+	*v_l = v_des - ang_cor;
+	*v_r = v_des + ang_cor;
+	return 0;
+}
+
+int get_state_from_poses(double* state, gazebo::math::Pose rob_pose,
+	double plane_angle_x, double plane_angle_y)
+{
+	gazebo::math::Pose plane_pose;
+	gazebo::math::Pose rel_pose;
+	gazebo::math::Vector3 euler_angles;
 	gazebo::math::Vector3 axis;
-	gazebo::math::Pose rel_pose = rob_pose - plane_pose;
+	double angle;
+	
+	euler_angles.x = plane_angle_x;
+	euler_angles.y = plane_angle_y;
+	euler_angles.z = 0;
+	
+	plane_pose.pos.x = PLANE_POS_X;
+	plane_pose.pos.y = PLANE_POS_Y;
+	plane_pose.pos.z = PLANE_POS_Z;
+	
+	plane_pose.rot.SetFromEuler(euler_angles);
+	
+	rel_pose = rob_pose - plane_pose;
 	
 	state[X_POS] = rel_pose.pos.x;
 	state[Y_POS] = rel_pose.pos.y;
 	
-	rel_pose.rot.GetAsAxis(&axis, &angle);
+	rel_pose.rot.GetAsAxis(axis, angle);
 	state[THETA] = angle;
 	
 	if (axis.Dot(gazebo::math::Vector3(0, 0, 1)) < 0)
@@ -117,16 +169,15 @@ bool balance_plane_1d(double* v_l, double* v_r, gazebo::math::Pose rob_pose,
 		axis *= -1;
 	}
 	
-	if (axis.Dot(gazebo::math::Vector3(0, 0, 1)) < 1-MAX_REL_AXIS_OFF || rel_pose.z > MAX_REL_Z)
+	if (axis.Dot(gazebo::math::Vector3(0, 0, 1)) < 1-MAX_REL_AXIS_OFF || rel_pose.pos.z > MAX_REL_Z)
 	{
 		return 1;
 	}
-	
-	v_des = (m/m_t)*(KP*plane_theta + KD*plane_omega);
-	ang_cor = KA*(-state[THETA]);
-	
-	*v_l = v_des - ang_cor;
-	*v_r = v_des + ang_cor;
-	return 0;
+	else
+	{
+		return 0;
+	}
 }
+
+#endif
 

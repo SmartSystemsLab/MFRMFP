@@ -29,6 +29,7 @@ namespace gazebo
 		physics::ModelPtr _plane;
 		physics::JointPtr _Motor_l;
 		physics::JointPtr _Motor_r;
+		physics::JointPtr _plane_joint;
 		event::ConnectionPtr updateConnection;
 		std::ofstream out_file;
 		std::ofstream pose_file;
@@ -57,6 +58,7 @@ namespace gazebo
 			this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ThreePiCTRL_PD::OnUpdate, this, _1));
 			this->_Motor_l = this->_model->GetJoint("left_wheel_joint");
 			this->_Motor_r = this->_model->GetJoint("right_wheel_joint");
+			this->_plane_joint = this->_plane->GetJoint("main_joint");
 		}
 		
 		void Init()
@@ -85,10 +87,11 @@ namespace gazebo
 			
 			// Get the state
 			math::Pose ThreePi_pose = this->_model->GetWorldPose();
-			math::Pose Plane_pose = this->_plane->GetWorldPose();
+			double theta = _plane_joint->GetAngle(0).Radian();
+			double omega = _plane_joint->GetVelocity(0);
 			
 			// Get Desired velocities
-			calc_des_vel(&v_dl, &v_dr, state , des_pos);
+			balance_plane_1d(&v_dl, &v_dr, ThreePi_pose, 1, 1, theta, omega);
 			
 			// Get Actual velocities
 			double v_al = this->_Motor_l->GetVelocity(0)*WHEEL_RADIUS;
@@ -122,10 +125,6 @@ namespace gazebo
 			
 			this->_Motor_l->SetForce(0, tau_l);
 			this->_Motor_r->SetForce(0, tau_r);
-
-			// write data
-			pose_file << state[0] << ',' << state[1] << ',' << state[2] << std::endl;
-			out_file << iter << ',' << v_dl << ',' << v_dr << ',' << v_al << ',' << v_ar << ',' << err_l << ',' << err_r << ',' << derr_l << ',' << derr_r << ',' << tau_l << ',' << tau_r << std::endl;
 			
 			// update static variables
 			lerr_l = err_l;

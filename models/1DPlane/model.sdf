@@ -43,25 +43,26 @@
     <link name='plane'>
       <pose>0.0 0.0 0.5 0 0 0</pose>
       <inertial>
-			  <pose>0 0 0 0 0 0</pose>
-          <mass>7.75</mass>
-            <inertia>
-              <ixx>0.24002556</ixx>
-              <ixy>0.0</ixy>
-              <ixz>0.0</ixz>
-              <iyy>0.24002556</iyy>
-              <iyz>0.0</iyz>
-              <izz>0.479999</izz>
-            </inertia>
-         </inertial>
-        <collision name='collision_plane'>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>7780</mass>
+        <inertia>
+          <ixx>240.02556</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>240.02556</iyy>
+          <iyz>0.0</iyz>
+          <izz>479.999</izz>
+        </inertia>
+      </inertial>
+      
+      <collision name='collision_plane'>
         <geometry>
           <box>
             <size>1 1 0.01</size>
           </box>
         </geometry>
       </collision>
-      
+        
       <visual name='visual_plane'>
         <geometry>
           <box>
@@ -83,6 +84,18 @@
         <limit>
           <lower>-0.52359877559</lower>
           <upper>0.52359877559</upper>
+        </limit>
+      </axis>
+    </joint>
+    
+    <joint type='revolute' name='fix_to_ground'>
+      <parent>world</parent>
+      <child>base</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0.0</lower>
+          <upper>0.0</uppper>
         </limit>
       </axis>
     </joint>

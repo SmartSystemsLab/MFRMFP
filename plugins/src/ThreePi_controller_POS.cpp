@@ -21,7 +21,7 @@
 
 namespace gazebo
 {
-	class ThreePiCTRL_PD : public ModelPlugin
+	class ThreePiCTRL_POS : public ModelPlugin
 	{
 		private:
 		physics::WorldPtr _world;
@@ -34,14 +34,12 @@ namespace gazebo
 		std::ofstream pose_file;
 		
 		public:
-		ThreePiCTRL_PD()
+		ThreePiCTRL_POS()
 		{
 		}
 		
-		~ThreePiCTRL_PD()
+		~ThreePiCTRL_POS()
 		{
-			out_file.close();
-			pose_file.close();
 		}
 		
 		void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
@@ -54,15 +52,13 @@ namespace gazebo
 			_plane = _world->GetModel("1DPlane");
 			// Listen to the update event. This event is broadcast every
 			// simulation iteration.
-			this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ThreePiCTRL_PD::OnUpdate, this, _1));
+			this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ThreePiCTRL_POS::OnUpdate, this, _1));
 			this->_Motor_l = this->_model->GetJoint("left_wheel_joint");
 			this->_Motor_r = this->_model->GetJoint("right_wheel_joint");
 		}
 		
 		void Init()
 		{
-			out_file.open("ThreePiSim_out.csv");
-			pose_file.open("ThreePiSim_pose.csv");
 		}
 		
 		void OnUpdate(const common::UpdateInfo & /*_info*/)
@@ -124,10 +120,6 @@ namespace gazebo
 			
 			this->_Motor_l->SetForce(0, tau_l);
 			this->_Motor_r->SetForce(0, tau_r);
-
-			// write data
-			pose_file << state[0] << ',' << state[1] << ',' << state[2] << std::endl;
-			out_file << iter << ',' << v_dl << ',' << v_dr << ',' << v_al << ',' << v_ar << ',' << err_l << ',' << err_r << ',' << derr_l << ',' << derr_r << ',' << tau_l << ',' << tau_r << std::endl;
 			
 			// update static variables
 			lerr_l = err_l;
@@ -136,6 +128,6 @@ namespace gazebo
 		}
 	};
 	
-	GZ_REGISTER_MODEL_PLUGIN(ThreePiCTRL_PD)
+	GZ_REGISTER_MODEL_PLUGIN(ThreePiCTRL_POS)
 }
 

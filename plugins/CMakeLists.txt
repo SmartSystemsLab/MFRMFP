@@ -20,3 +20,9 @@ target_link_libraries(ThreePi_controller_POS ${GAZEBO_LIBRARIES} ${Boost_LIBRARI
 add_library(ThreePi_controller_1D SHARED src/ThreePi_controller_1D.cpp)
 target_link_libraries(ThreePi_controller_1D ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
 
+add_library(ThreePi_recorder SHARED src/ThreePi_recorder.cpp)
+target_link_libraries(ThreePi_recorder ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
+
+add_library(Plane1D_recorder SHARED src/Plane1D_recorder.cpp)
+target_link_libraries(Plane1D_recorder ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
+
