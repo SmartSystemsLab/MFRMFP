@@ -234,7 +234,7 @@ void Comm_handler::send_command(unsigned int des, command data)
     for (int i = 0; i < frame_len; i++)
     {
       mySerial->WriteByte(frame[i]);
-      printf("%.2x ", frame[i]);
+      printf("% .2x ", frame[i]);
     }
     
     printf("\n");
